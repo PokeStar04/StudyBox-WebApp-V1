@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "git-filter-repo": "^0.0.30",
+    "mjml": "^4.15.3"
+  }
+}
