@@ -17,7 +17,7 @@ const ProfilPopup = ({ onClose }: ProfilPopupProps) => {
   const profileImage = useSelector(
     (state: RootState) => state.profileImage.profileImage,
   );
-  const email = useSelector((state: RootState) => state.auth.token);
+  const email = useSelector((state: RootState) => state.auth.email);
   const navigate = useNavigate();
   const dispatch = useDispatch(); // Initialisez useDispatch pour utiliser le dispatch
 
