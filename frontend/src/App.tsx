@@ -16,6 +16,8 @@ import UserPage from './pages/UserPage';
 import DashboardPage from './pages/DashboardPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import NotFoundPage from './pages/NotFoundPage';
+
+import ProfilFormComponent from './components/Form/ProfilForm/ProfileFormComponent';
 const App = () => {
   return (
     <Provider store={store}>
@@ -27,7 +29,7 @@ const App = () => {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
             <Route path="*" element={<NotFoundPage />} />
-
+            <Route path="/profile" element={<ProfilFormComponent />} />
             {/* Routes protégées */}
             <Route path="/" element={<Layout />}>
               <Route path="*" element={<NotFoundPage />} />

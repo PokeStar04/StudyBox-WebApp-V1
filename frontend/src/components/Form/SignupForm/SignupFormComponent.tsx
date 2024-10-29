@@ -88,7 +88,7 @@ const SignupFormComponent = () => {
 
   return (
     <div className="flex flex-col md:flex-row gap-20 ">
-      <div className="w-full md:w-1/2 bg-white flex flex-col ">
+      <div className="w-full md:w-1/2 bg-white flex flex-col overflow-y-auto max-h-[60vh] p-4">
         {step === 1 ? (
           <div>
             <H1>Bienvenue sur StudiBox</H1>
