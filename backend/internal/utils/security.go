@@ -209,3 +209,41 @@ func GenerateParrainCode() string {
 
 	return string(code)
 }
+
+// GenerateMobileAccessToken génère un token d'accès pour l'application mobile.
+func GenerateMobileAccessToken(userID uint, secret string) (string, error) {
+	log.Printf("Generating mobile access token for UserID: %d", userID)
+	claims := &JWTClaims{
+		UserID: userID,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(time.Hour * 1).Unix(), // 1 heure d'expiration
+		},
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	signedToken, err := token.SignedString([]byte(secret))
+	if err != nil {
+		log.Printf("Error generating mobile access token: %v", err)
+		return "", err
+	}
+	return signedToken, nil
+}
+
+// GenerateMobileRefreshToken génère un token de rafraîchissement pour l'application mobile.
+func GenerateMobileRefreshToken(userID uint, secret string) (string, error) {
+	log.Printf("Generating mobile refresh token for UserID: %d", userID)
+	claims := &JWTClaims{
+		UserID: userID,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(time.Hour * 24 * 30).Unix(), // 30 jours d'expiration
+		},
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	signedToken, err := token.SignedString([]byte(secret))
+	if err != nil {
+		log.Printf("Error generating mobile refresh token: %v", err)
+		return "", err
+	}
+	return signedToken, nil
+}
