@@ -491,3 +491,85 @@ func (s *AuthService) GetUserIDByEmail(email string) (*response.UserIDResponse, 
 		Message: "User ID retrieved successfully",
 	}, nil
 }
+
+func (s *AuthService) RegisterNormalUser(registerReq *request.RegisterNormalUserRequest) (*response.RegisterResponse, error) {
+	// Vérifie si l'email est déjà pris
+	emailCheckReq := &request.EmailExistenceRequest{Email: registerReq.Email}
+	if err := s.CheckIfEmailExists(emailCheckReq); err != nil {
+		return nil, err
+	}
+
+	// Vérifie le code de parrainage s'il est fourni
+	var parrainID uint
+	if registerReq.ParrainageCode != "" {
+		var parrain models.User
+		if err := s.DB.Where("parrain_code = ?", registerReq.ParrainageCode).First(&parrain).Error; err != nil {
+			return nil, errors.New("invalid parrainage code")
+		}
+		parrainID = parrain.ID
+	}
+
+	// Hasher le mot de passe
+	hashedPassword, err := utils.HashPassword(registerReq.Password)
+	if err != nil {
+		return nil, errors.New("failed to hash password")
+	}
+
+	// Générer un code de parrain unique
+	parrainCode := utils.GenerateParrainCode()
+
+	// Crée l'utilisateur sans encore l'insérer
+	user := models.User{
+		Email:          registerReq.Email,
+		Password:       hashedPassword,
+		FirstName:      registerReq.FirstName,
+		LastName:       registerReq.LastName,
+		ParrainageCode: registerReq.ParrainageCode,
+		ParrainCode:    parrainCode,
+	}
+
+	// Enregistrer l'utilisateur dans la base de données
+	if err := s.DB.Create(&user).Error; err != nil {
+		return nil, errors.New("failed to create user")
+	}
+
+	// Si le code de parrainage est valide, créer une relation de parrainage
+	if parrainID != 0 {
+		referral := models.Referral{
+			ParrainID: parrainID,
+			FilleulID: user.ID,
+		}
+		if err := s.DB.Create(&referral).Error; err != nil {
+			// Supprimer l'utilisateur si l'insertion de la relation échoue
+			s.DB.Delete(&user)
+			return nil, errors.New("failed to create referral")
+		}
+	}
+
+	// Récupérer l'ID du rôle "user"
+	roleIDReq := &request.RoleIDRequest{RoleName: "user"}
+	roleIDResp, err := s.GetRoleIDByName(roleIDReq)
+	if err != nil {
+		// Supprimer l'utilisateur si l'attribution du rôle échoue
+		s.DB.Delete(&user)
+		return nil, err
+	}
+
+	// Assigner le rôle "user" à l'utilisateur
+	assignRoleReq := &request.AssignUserRoleRequest{
+		UserID: user.ID,
+		RoleID: roleIDResp.RoleID,
+	}
+	if _, err := s.AssignUserRole(assignRoleReq); err != nil {
+		// Supprimer l'utilisateur si l'attribution du rôle échoue
+		s.DB.Delete(&user)
+		return nil, err
+	}
+
+	// Retourner une réponse réussie
+	return &response.RegisterResponse{
+		UserID:  user.ID,
+		Message: "Normal user successfully registered",
+		Success: true,
+	}, nil
+}

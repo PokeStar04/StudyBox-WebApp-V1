@@ -782,3 +782,20 @@ func (s *EventService) UploadEventImages(files []multipart.File, fileNames []str
 	}
 	return results, nil
 }
+
+// SERVICE MOBILE
+
+// APP MOBILE
+func (s *EventService) GetAllEventsMobile() ([]models.Event, error) {
+	var events []models.Event
+	if err := s.db.
+		Preload("Categories").
+		Preload("Tags").
+		Preload("Options").
+		Preload("Tarifs").
+		Preload("Descriptions").
+		Find(&events).Error; err != nil {
+		return nil, err
+	}
+	return events, nil
+}

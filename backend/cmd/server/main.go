@@ -142,7 +142,7 @@ func main() {
 	eventService := event.NewEventService(dbConnection, s3Service)
 	passwordService := password.NewPasswordResetService(dbConnection)
 	profilService := profilservice.NewProfilService(dbConnection, s3Service)
-	
+
 	userService := userservice.NewUserService(dbConnection)
 	jwtSecret := config.AppConfig.JwtSecretAccessKey
 

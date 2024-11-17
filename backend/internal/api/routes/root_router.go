@@ -7,6 +7,7 @@ import (
 	"backend/internal/services/organisation"
 	"backend/internal/services/password"
 	"backend/internal/services/profilservice"
+	"backend/internal/services/referral"
 	"backend/internal/services/storage"
 	"backend/internal/services/userservice"
 	"backend/pkg/httpclient"
@@ -39,6 +40,10 @@ func registerV1Routes(v1Router *mux.Router, authService *auth.AuthService, event
 	// Routes d'authentification pour V1
 	authRouter := v1Router.PathPrefix("/auth").Subrouter()
 	RegisterAuthRoutes(authRouter, authService, apiClient)
+
+	referralService := referral.NewReferralService(db)
+	referralRouter := v1Router.PathPrefix("/referrals").Subrouter()
+	RegisterReferralRoutes(referralRouter, referralService)
 
 	// Routes de profil avec AuthMiddleware et RoleMiddleware
 	profilRouter := v1Router.PathPrefix("/profil").Subrouter()
