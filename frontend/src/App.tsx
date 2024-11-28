@@ -30,10 +30,9 @@ const App = () => {
             <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
             <Route path="*" element={<NotFoundPage />} />
             <Route path="/profile" element={<ProfilFormComponent />} />
-            {/* Routes protégées */}
+
             <Route path="/" element={<Layout />}>
               <Route path="*" element={<NotFoundPage />} />
-
               <Route path="dashboard" element={<DashboardPage />} />
               <Route path="profil" element={<ProfilPage />} />
               <Route path="organisation" element={<OrganisationPage />} />
@@ -46,7 +45,6 @@ const App = () => {
                 path="/organisation/:companyName"
                 element={<TargetOrganisationPage />}
               />
-
               <Route path="user" element={<UserPage />} />
             </Route>
           </Routes>
