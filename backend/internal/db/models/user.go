@@ -19,11 +19,12 @@ type User struct {
 	City           string    `json:"city"`
 	ProfileType    string    `json:"profileType"` // 'étudiant', 'non étudiant'
 	ParrainageCode string    `json:"parrainageCode"`
-	ParrainCode    string    `gorm:"unique" json:"parrainCode"` // Code unique généré pour parrainer d'autres utilisateurs
+	ParrainCode    string    `gorm:"unique;default:null" json:"parrainCode"`
 	AssociationID  uint      `json:"associationId"`
 	SchoolID       uint      `json:"schoolId"`
 	StudiboxCoins  int       `gorm:"default:0" json:"studiboxCoins"`    // Solde total des Studibox Coins
 	Roles          []Role    `gorm:"many2many:user_roles" json:"roles"` // Relation plusieurs à plusieurs avec les rôles
 	CreatedAt      time.Time `gorm:"autoCreateTime" json:"createdAt"`   // Crée automatiquement lors de l'insertion
 	UpdatedAt      time.Time `gorm:"autoUpdateTime" json:"updatedAt"`   // Met à jour automatiquement à chaque modification
+	RefreshToken   string    `json:"refreshToken"`
 }
