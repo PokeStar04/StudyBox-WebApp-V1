@@ -22,7 +22,7 @@ const TopBar = ({ isCollapsed }: TopBarProps) => {
       <ProfilPopup onClose={closeProfilePopup} />
     </div>
   )}
-  
+
   const handleProfileClick = () => {
     setProfilePopupVisible((prev) => !prev); // Toggle pour afficher/masquer le ProfilPopup
   };
@@ -33,7 +33,6 @@ const TopBar = ({ isCollapsed }: TopBarProps) => {
       event.currentTarget.src = defaultImageUrl; // Change l'image uniquement si ce n'est pas déjà l'image par défaut
     }
   };
-
 
   return (
     <div
