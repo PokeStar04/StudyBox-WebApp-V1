@@ -15,5 +15,6 @@ func RegisterStripeRoutes(router *mux.Router, stripeService *stripe.StripeServic
 	router.HandleFunc("/products", handler.CreateProductFromEventHandler).Methods("POST", "OPTIONS")
 	router.HandleFunc("/prices", handler.CreatePriceFromTarifHandler).Methods("POST", "OPTIONS")
 	router.HandleFunc("/payment-intents", handler.CreatePaymentIntentHandler).Methods("POST", "OPTIONS")
+	router.HandleFunc("/payment-intents-klarna", handler.CreatePaymentIntentKlarnaHandler).Methods("POST", "OPTIONS")
 	router.HandleFunc("/payment-intents/confirm", handler.ConfirmPaymentIntentHandler).Methods("POST", "OPTIONS")
 }

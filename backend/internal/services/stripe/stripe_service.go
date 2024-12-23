@@ -455,24 +455,23 @@ func (s *StripeService) CreatePaymentIntent(amount int64, currency string, email
 	log.Printf("Payment Intent créé avec succès : %s", pi.ID)
 	return pi, nil
 }
-
-// CreatePaymentIntentWithKlarna pour un paiement en plusieurs fois avec Klarna
-func (s *StripeService) CreatePaymentIntentWithKlarna(amount int64, currency string, email string) (*stripe.PaymentIntent, error) {
+func (s *StripeService) CreatePaymentIntentWithKlarna(amount int64, currency string, email string, userId int64, metadata map[string]string) (*stripe.PaymentIntent, error) {
 	params := &stripe.PaymentIntentParams{
 		Amount:             stripe.Int64(amount),                   // Montant en centimes
 		Currency:           stripe.String(currency),                // Devise (ex. : "eur")
 		ReceiptEmail:       stripe.String(email),                   // Adresse email pour le reçu
-		PaymentMethodTypes: stripe.StringSlice([]string{"klarna"}), // Klarna comme méthode de paiement
+		PaymentMethodTypes: stripe.StringSlice([]string{"klarna"}), // Mode de paiement (CB ici)
+		Metadata:           metadata,                               // Ajout des métadonnées
 
 	}
 
 	pi, err := paymentintent.New(params)
 	if err != nil {
-		log.Printf("Erreur lors de la création du Payment Intent Klarna : %v", err)
-		return nil, fmt.Errorf("failed to create Klarna Payment Intent: %w", err)
+		log.Printf("Erreur lors de la création du Payment Intent : %v", err)
+		return nil, fmt.Errorf("failed to create Payment Intent: %w", err)
 	}
 
-	log.Printf("Payment Intent Klarna créé avec succès : %s", pi.ID)
+	log.Printf("Payment Intent créé avec succès : %s", pi.ID)
 	return pi, nil
 }
 
