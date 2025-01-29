@@ -53,7 +53,7 @@ func (h *AuthHandler) HandleLogin(w http.ResponseWriter, r *http.Request) {
 	// Préparation de la requête CheckUserRoleRequest
 	roleCheckReq := &request.CheckUserRoleRequest{
 		UserID: userID,
-		Roles:  []string{"admin", "business", "association", "school"},
+		Roles:  []string{"admin", "business", "association", "school","user"},
 	}
 
 	// Vérifier si l'utilisateur a le rôle requis

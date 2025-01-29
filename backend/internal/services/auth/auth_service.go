@@ -164,12 +164,31 @@ func (s *AuthService) Login(loginReq *request.LoginRequest) (*response.LoginResp
 	if err := s.DB.Save(&user).Error; err != nil {
 		return nil, errors.New("failed to save refresh token")
 	}
+	var userLocation models.UserLocation
+	if user.UserLocation.ID != 0 {
+		userLocation = user.UserLocation
+	}
 
 	// Crée la réponse de connexion avec les détails de l’utilisateur
 	loginResp := &response.LoginResponse{
 		Token:           token,
 		ProfileImage:    user.ProfileImage,
 		IsAuthenticated: true,
+		Data: response.LoginCacheData{
+			BirthDate:      defaultString(&user.BirthDate),
+			City:           defaultString(&userLocation.City),
+			Country:        defaultString(&userLocation.Country),
+			Email:          defaultString(&user.Email),
+			FirstName:      defaultString(&user.FirstName),
+			LastName:       defaultString(&user.LastName),
+			NumberStreet:   defaultString(&userLocation.NumberStreet),
+			ParrainCode:    defaultString(&user.ParrainCode),
+			ParrainageCode: defaultString(&user.ParrainageCode),
+			Phone:          defaultString(&user.Phone),
+			Postcode:       defaultString(&userLocation.Postcode),
+			Region:         defaultString(&userLocation.Region),
+			Street:         defaultString(&userLocation.Street),
+		},
 	}
 
 	return loginResp, nil
@@ -710,4 +729,10 @@ func (s *AuthService) RefreshAccessToken(userID uint) (string, error) {
 	}
 
 	return newAccessToken, nil
+}
+func defaultString(value *string) string {
+	if value == nil || *value == "" {
+		return ""
+	}
+	return *value
 }
