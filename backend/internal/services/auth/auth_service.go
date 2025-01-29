@@ -175,6 +175,7 @@ func (s *AuthService) Login(loginReq *request.LoginRequest) (*response.LoginResp
 		ProfileImage:    user.ProfileImage,
 		IsAuthenticated: true,
 		Data: response.LoginCacheData{
+			Id:      		defaultString(&user.ID),
 			BirthDate:      defaultString(&user.BirthDate),
 			City:           defaultString(&userLocation.City),
 			Country:        defaultString(&userLocation.Country),

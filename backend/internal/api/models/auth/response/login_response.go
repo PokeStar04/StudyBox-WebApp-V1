@@ -10,6 +10,8 @@ type LoginResponse struct {
 }
 
 type LoginCacheData struct {
+
+	Id            string  `json:"id"`
 	BirthDate     string  `json:"birthDate"`
 	City          string  `json:"city"`
 	Country       string  `json:"country"`
