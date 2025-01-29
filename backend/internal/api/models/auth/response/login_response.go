@@ -11,7 +11,7 @@ type LoginResponse struct {
 
 type LoginCacheData struct {
 
-	Id            string  `json:"id"`
+	Id            uint  `json:"id"`
 	BirthDate     string  `json:"birthDate"`
 	City          string  `json:"city"`
 	Country       string  `json:"country"`
@@ -19,10 +19,11 @@ type LoginCacheData struct {
 	FirstName     string  `json:"firstName"`
 	LastName      string  `json:"lastName"`
 	NumberStreet  string  `json:"numberStreet"`
-	ParrainCode   string `json:"parrainCode"`
-	ParrainageCode string  `json:"parrainageCode"`
+	ParrainCode   string  `json:"parrainCode"`
+	ParrainageCode string `json:"parrainageCode"`
 	Phone         string  `json:"phone"`
 	Postcode      string  `json:"postcode"`
 	Region        string  `json:"region"`
 	Street        string  `json:"street"`
+    RefreshToken   string  `json:"refreshToken"`
 }
