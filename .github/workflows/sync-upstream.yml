@@ -1,0 +1,23 @@
+name: Sync with PokeStar04
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Exécute chaque jour à minuit (UTC)
+  workflow_dispatch:  # Permet de l'exécuter manuellement depuis GitHub Actions
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      - name: Add upstream and fetch updates
+        run: |
+          git remote add upstream https://github.com/PokeStar04/StudyBox-WebApp-V1.git
+          git fetch upstream
+          git checkout main
+          git merge upstream/main --no-edit
+          git push origin main
