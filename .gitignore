@@ -1,3 +1,31 @@
+# Ignorer les fichiers d'environnement
 .env
 backend/.env
-.env
+
+# Ignorer les fichiers de dépendances et de compilation Go
+/go/bin/
+/go/pkg/
+/backend/go.sum
+/backend/go.mod
+
+# Ignorer les fichiers générés par Docker
+docker-compose.override.yaml
+.dockerignore
+
+# Ignorer les fichiers et dossiers spécifiques à l’IDE et aux systèmes
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Ignorer les fichiers de logs
+logs/
+*.log
+
+# Ignorer les dossiers de dépendances Node.js (si applicable)
+node_modules/
+
+# Ignorer les artefacts de build (si applicable)
+dist/
+build/
