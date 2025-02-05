@@ -175,7 +175,7 @@ func (s *AuthService) Login(loginReq *request.LoginRequest) (*response.LoginResp
 		ProfileImage:    user.ProfileImage,
 		IsAuthenticated: true,
 		Data: response.LoginCacheData{
-			Id:      		user.ID,
+			Id:             user.ID,
 			RefreshToken:   defaultString(&user.RefreshToken),
 			BirthDate:      defaultString(&user.BirthDate),
 			City:           defaultString(&userLocation.City),
@@ -184,7 +184,7 @@ func (s *AuthService) Login(loginReq *request.LoginRequest) (*response.LoginResp
 			FirstName:      defaultString(&user.FirstName),
 			LastName:       defaultString(&user.LastName),
 			NumberStreet:   defaultString(&userLocation.NumberStreet),
-			ParrainCode:    defaultString(&user.ParrainCode),
+			ParrainCode:    defaultString(user.ParrainCode),
 			ParrainageCode: defaultString(&user.ParrainageCode),
 			Phone:          defaultString(&user.Phone),
 			Postcode:       defaultString(&userLocation.Postcode),
@@ -639,7 +639,7 @@ func (s *AuthService) RegisterNormalUser(registerReq *request.RegisterNormalUser
 		FirstName:      registerReq.FirstName,
 		LastName:       registerReq.LastName,
 		ParrainageCode: registerReq.ParrainageCode,
-		ParrainCode:    parrainCode,
+		ParrainCode:    &parrainCode,
 	}
 
 	// Enregistrer l'utilisateur dans la base de données
@@ -698,10 +698,11 @@ func (s *AuthService) RegisterNormalUser(registerReq *request.RegisterNormalUser
 
 	// Retourner une réponse réussie avec le token
 	return &response.RegisterUserResponse{
-		UserID:  user.ID,
-		Message: "User successfully registered",
-		Success: true,
-		Token:   token,
+		UserID:      user.ID,
+		Message:     "User successfully registered",
+		Success:     true,
+		Token:       token,
+		ParrainCode: *user.ParrainCode,
 	}, nil
 }
 

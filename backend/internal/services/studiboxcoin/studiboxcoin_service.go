@@ -28,7 +28,7 @@ func (s *StudiboxCoinService) AddTransaction(userID uint, amount float64, coinsU
 
 	// Chercher le parrain (via le champ `ParrainCode` dans la table `User`)
 	var referrerID *uint
-	if user.ParrainCode != "" {
+	if user.ParrainCode != nil || *user.ParrainCode != "" {
 		var referrer models.User
 		if err := s.db.Where("parrainage_code = ?", user.ParrainCode).First(&referrer).Error; err == nil {
 			referrerID = &referrer.ID

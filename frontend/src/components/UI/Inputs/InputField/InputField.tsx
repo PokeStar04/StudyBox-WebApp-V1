@@ -65,7 +65,7 @@ import React, { useState } from 'react';
 import eyeSlash from './eye-slash.svg';
 
 interface InputFieldProps {
-  type: 'text' | 'password' | 'email' | 'number';
+  type: 'text' | 'password' | 'email' | 'number'| 'description';
   label: string;
   value: string | number;
   placeholder?: string;
@@ -117,7 +117,16 @@ function InputField({
         {label}
       </label>
       <div className="relative">
-        {multiline ? (
+         {type === 'description' ? (
+          <textarea
+            value={value as string}
+            placeholder={placeholder}
+            onChange={handleChange}
+            rows={rows}
+            className={`border border-lightGray hover:border-[#3182ce] rounded-xl w-full px-4 py-2 ${sizeClasses[size]}`}
+            disabled={!isEditable}
+          />
+        ) : multiline ? (
           <textarea
             value={value as string}
             placeholder={placeholder}

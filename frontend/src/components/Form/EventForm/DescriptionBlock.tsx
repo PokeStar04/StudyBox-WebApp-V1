@@ -76,7 +76,7 @@ const DescriptionBlock = ({
             size="small"
           />
           <InputField
-            type="text"
+            type="description"
             label="Description"
             value={description.description}
             onChange={(value) =>

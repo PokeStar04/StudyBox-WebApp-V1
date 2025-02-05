@@ -9,10 +9,11 @@ type RegisterResponse struct {
 
 // RegisterUserResponse représente la réponse après un enregistrement réussi.
 type RegisterUserResponse struct {
-	UserID  uint   `json:"userId"`
-	Message string `json:"message"`
-	Success bool   `json:"success"`
-	Token   string `json:"token"`
+	UserID      uint   `json:"userId"`
+	Message     string `json:"message"`
+	Success     bool   `json:"success"`
+	Token       string `json:"token"`
+	ParrainCode string `json:"parrainCode"`
 }
 type AutoAuthenticateResponse struct {
 	UserID  uint   `json:"userId"`

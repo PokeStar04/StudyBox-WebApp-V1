@@ -17,6 +17,7 @@ import TarifsBlock from './TarifsBlock';
 import OptionsBlock from './OptionsBlock';
 import LocationBlock from './LocationBlock';
 import SaveButton from '../../UI/Button/SaveButton';
+import EventModal from '../../UI/Modal/EventModal';
 import ImageUpload from './ImageUpload';
 import {
   getEventById,
@@ -44,7 +45,9 @@ const EventFormComponent = ({
   >([]);
   const isMobile = useIsMobile();
   const [images, setImages] = useState<File[]>([]); // Stocker les images sélectionnées
-
+  // 🚀 Ajout des états pour la modal
+  const [isOpen, setIsOpen] = useState(false);
+  const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
   const [formData, setFormData] = useState<EventForm>({
     isOnline: false,
     isPublic: false,
@@ -182,6 +185,8 @@ const EventFormComponent = ({
     updateField('video_url', url);
   };
   const handleFormSubmit = async () => {
+    setIsOpen(true); // Ouvre la modal
+    setStatus("loading"); // Affiche le chargement
     try {
       const uploadedImageUrls =
         images.length > 0 ? await handleImageUpload(images) : [];
@@ -193,6 +198,8 @@ const EventFormComponent = ({
           images: allImageUrls,
         };
         await updateEvent(apiPayload);
+        setStatus("success"); // ✅ Succès
+
         console.log('Event updated successfully');
       } else {
         const singleStringUrls = allImageUrls.join(', ');
@@ -202,9 +209,13 @@ const EventFormComponent = ({
         };
         await createEvent(apiPayload);
         console.log('Event created successfully');
+        setStatus("success"); // ✅ Succès
+
       }
     } catch (error) {
       console.error("Erreur lors de la soumission de l'événement:", error);
+      setStatus("error"); // ❌ Échec
+
     }
   };
 
@@ -292,6 +303,13 @@ const EventFormComponent = ({
       <div className="fixed right-4 bottom-4">
         <SaveButton onClick={handleFormSubmit} />
       </div>
+      targetEventId
+      <EventModal 
+        isOpen={isOpen} 
+        onClose={() => setIsOpen(false)} 
+        status={status} 
+        isUpdate={!!targetEventId} 
+      />
     </div>
   );
 };

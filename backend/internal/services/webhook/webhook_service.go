@@ -673,7 +673,7 @@ func (s *WebhookService) getReferrerID(userID uint) (*uint, error) {
 	}
 
 	// Si l'utilisateur n'a pas de ParrainCode, retourner nil
-	if user.ParrainCode == "" {
+	if user.ParrainCode == nil || *user.ParrainCode == "" {
 		log.Printf("Utilisateur %d n'a pas de parrainage actif.", userID)
 		return nil, nil
 	}

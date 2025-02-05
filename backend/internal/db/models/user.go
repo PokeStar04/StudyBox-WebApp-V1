@@ -19,7 +19,7 @@ type User struct {
 	City           string       `json:"city"`
 	ProfileType    string       `json:"profileType"` // 'étudiant', 'non étudiant'
 	ParrainageCode string       `json:"parrainageCode"`
-	ParrainCode    string       `gorm:"unique;default:null" json:"parrainCode"`
+	ParrainCode    *string      `gorm:"unique" json:"parrainCode"`
 	AssociationID  uint         `json:"associationId"`
 	SchoolID       uint         `json:"schoolId"`
 	UserLocation   UserLocation `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"userLocation"` // Relation un à un
