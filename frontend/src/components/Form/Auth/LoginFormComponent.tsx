@@ -41,7 +41,6 @@ const LoginFormComponent = () => {
     try {
       const data: LoginResponse = await loginUser(formData);
       if (data.isAuthenticated && data.token) {
-        // Dispatch l'action de connexion et définit l'image de profil
         dispatch(
           login({
             token: data.token,
@@ -52,17 +51,15 @@ const LoginFormComponent = () => {
         );
         dispatch(setProfileImage(data.profileImage.url));
 
-        // Redirection vers le tableau de bord après connexion
         goTo('/dashboard');
       } else {
-        setErrorMessage(
-          'Échec de la connexion. Veuillez vérifier vos identifiants.',
-        );
+        setErrorMessage('Échec de la connexion. Veuillez vérifier vos identifiants.');
       }
-    } catch (error) {
-      setErrorMessage(
-        'Échec de la connexion. Veuillez vérifier vos identifiants.',
-      );
+    } catch (error: any) {
+      console.log('Erreur lors de la connexion :', error);
+
+      // Affichage du message d'erreur reçu
+      setErrorMessage(error.message);
     } finally {
       setIsLoading(false);
     }

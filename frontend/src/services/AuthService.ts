@@ -89,7 +89,9 @@ export const loginUser = async (
 
     if (axios.isAxiosError(error)) {
       if (error.response?.status === 401) {
-        throw new Error('Email ou mot de passe incorrect.');
+        // Vérifie si le message d'erreur est renvoyé par le serveur
+        const serverMessage = error.response?.data?.message || 'Email ou mot de passe incorrect.';
+        throw new Error(serverMessage);
       }
     }
 
